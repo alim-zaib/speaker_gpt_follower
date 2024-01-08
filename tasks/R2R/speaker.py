@@ -182,7 +182,7 @@ class Seq2SeqSpeaker(object):
             loss += F.nll_loss(log_probs, target, ignore_index=vocab_pad_idx, reduce=True, size_average=True)
 
             for perm_index, src_index in enumerate(perm_indices):
-                word_idx = w_t[perm_index].data[0]
+                word_idx = w_t[perm_index].item()
                 if not ended[perm_index]:
                     outputs[src_index]['word_indices'].append(int(word_idx))
                     outputs[src_index]['score'] = float(sequence_scores[perm_index])
@@ -205,7 +205,7 @@ class Seq2SeqSpeaker(object):
         path_obs, path_actions, encoded_instructions = self.env.gold_obs_actions_and_instructions(self.max_episode_len, load_next_minibatch=load_next_minibatch)
         outputs, loss = self._score_obs_actions_and_instructions(path_obs, path_actions, encoded_instructions, self.feedback)
         self.loss = loss
-        self.losses.append(loss.data[0])
+        self.losses.append(loss.item())
         return outputs
 
     def beam_search(self, beam_size, path_obs, path_actions):

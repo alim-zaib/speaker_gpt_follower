@@ -5,6 +5,8 @@ import pprint
 from collections import Counter
 import numpy as np
 
+import torch
+
 from follower import least_common_viewpoint_path, path_element_from_observation
 
 
@@ -112,15 +114,26 @@ def run_rational_follower(envir, evaluator, follower, speaker, beam_size,
                 looped = True
             else:
                 candidate_lists_by_instr_id[instr_id] = instance_candidates
+                
+                
+        torch.cuda.empty_cache()
+                
         if looped:
             break
 
-    follower_scores = [cand['follower_score']
+    # Convert each tensor element to a numpy array within the list comprehension
+    follower_scores = [cand['follower_score'].detach().cpu().numpy()
+                       if torch.is_tensor(cand['follower_score'])
+                       else cand['follower_score']
                        for lst in candidate_lists_by_instr_id.values()
                        for cand in lst]
-    speaker_scores = [cand['speaker_score']
+
+    speaker_scores = [cand['speaker_score'].detach().cpu().numpy()
+                      if torch.is_tensor(cand['speaker_score'])
+                      else cand['speaker_score']
                       for lst in candidate_lists_by_instr_id.values()
                       for cand in lst]
+                      
 
     speaker_std = np.std(speaker_scores)
     follower_std = np.std(follower_scores)

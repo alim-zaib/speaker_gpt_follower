@@ -330,7 +330,7 @@ TEST_CASE( "RGB Image", "[Rendering]" ) {
         //cv::imshow("MatterSim", state->rgb);
         //int key = cv::waitKey(100);
         
-        double err = cv::norm(reference_image, state->rgb, CV_L2);
+        double err = cv::norm(reference_image, state->rgb, cv::NORM_L2);
         err /= reference_image.rows * reference_image.cols;
         CHECK(err < 0.15);
     }

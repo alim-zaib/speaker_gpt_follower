@@ -1,0 +1,18 @@
+[
+    {
+        "distance": 5.164596684588401,
+        "heading": 3.460765288681906,
+        "instructions": [
+            "as you walk past the bed, continue straight ahead and enter the bathroom . once inside, pause and wait in the doorway before proceeding further."
+        ],
+        "path": [
+            "51857544c192476faebf212acb1b3d90",
+            "1e86968849944444b66d9537efb5da9e",
+            "cb66d4266148455bbddf5d059a483711",
+            "8ccf449f599a4cd88648e1d0ff39fdd0",
+            "c341c46acf7044d1a712d622cbc94a27"
+        ],
+        "path_id": 1000000,
+        "scan": "17DRP5sb8fy"
+    }
+]
