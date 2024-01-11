@@ -417,7 +417,7 @@ class Seq2SeqAgent(BaseAgent):
 
             # Update ended list
             for i in range(batch_size):
-                action_idx = a_t[i].data[0]
+                action_idx = a_t[i].item()
                 if action_idx == 0:
                     ended[i] = True
 
@@ -507,7 +507,7 @@ class Seq2SeqAgent(BaseAgent):
             # dfried: I changed this so that the ended list is updated afterward; this causes <end> to be added as the last action, along with its score, and the final world state will be duplicated (to more closely match beam search)
             # Make environment action
             for i in range(batch_size):
-                action_idx = a_t[i].data[0]
+                action_idx = a_t[i].item()
                 env_action[i] = action_idx
 
             world_states = self.env.step(world_states, env_action, obs)
@@ -525,7 +525,7 @@ class Seq2SeqAgent(BaseAgent):
 
             # Update ended list
             for i in range(batch_size):
-                action_idx = a_t[i].data[0]
+                action_idx = a_t[i].item()
                 if action_idx == 0:
                     ended[i] = True
 
@@ -535,7 +535,7 @@ class Seq2SeqAgent(BaseAgent):
 
         #self.losses.append(self.loss.data[0] / self.episode_len)
         # shouldn't divide by the episode length because of masking
-        self.losses.append(self.loss.data[0])
+        self.losses.append(self.loss.item())
         return traj
 
     def beam_search(self, beam_size, load_next_minibatch=True, mask_undo=False):

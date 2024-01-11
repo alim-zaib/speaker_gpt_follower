@@ -3,6 +3,8 @@ import json
 import requests
 import os
 
+from reformat_instructions import format_instruction
+
 def call_chatgpt(prompt, api_key):
     """
     Function to call the ChatGPT API.
@@ -25,40 +27,19 @@ def call_chatgpt(prompt, api_key):
         response_text = response.text  # Get the detailed error message
         raise Exception(f'ChatGPT API request failed with status code {response.status_code}, response: {response_text}')
 
-def format_instruction(instruction):
-    """
-    Format the instruction to lowercase and adjust punctuation spacing to match the dataset,
-    and remove escaped characters.
-    """
-    # Convert to lowercase
-    instruction = instruction.lower()
-
-    # Replace periods and commas to have space on both sides
-    instruction = instruction.replace('.', ' . ')
-    instruction = instruction.replace(',', ' , ')
-
-    # Remove backslashes used for escaping and strip quotes
-    instruction = instruction.replace('\\', '')
-
-    # Remove any extra spaces, including potential double spaces from the replacements
-    instruction = ' '.join(instruction.split())
-
-    return instruction.strip('"')
-
-
-
 def refine_instruction(instruction, api_key):
     """
     Refine a single instruction using ChatGPT and format it.
     """
     if instruction.strip():  # Only process non-empty instructions
+        # THE PROMPT!!!
         prompt = f"Refine this instruction: {instruction}"
         refined_instruction = call_chatgpt(prompt, api_key)
         return format_instruction(refined_instruction)
     else:
         return instruction  # Return as-is if empty
 
-def process_file(input_file, output_file, api_key, num_items=100):
+def process_file(input_file, output_file, api_key, num_items=1000):
     """
     Process the input file with ChatGPT to refine instructions and save the output.
     """

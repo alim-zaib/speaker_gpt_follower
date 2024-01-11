@@ -15,6 +15,8 @@ import train
 
 from collections import namedtuple
 
+import torch
+
 EvalResult = namedtuple(
     "EvalResult", "nav_error, oracle_error, trajectory_steps, "
                   "trajectory_length, success, oracle_success")
@@ -126,7 +128,23 @@ class Evaluation(object):
         }
         if len(model_scores) > 0:
             assert len(model_scores) == instr_count
-            score_summary['model_score'] = np.average(model_scores)
+
+            # Convert to a NumPy array if it's a PyTorch tensor
+            if isinstance(model_scores, torch.Tensor):
+                model_scores_np = model_scores.cpu().numpy()
+            else:
+                model_scores_np = model_scores
+
+            # Debugging: Inspect the first few elements
+            print("First few elements of model_scores_np:", model_scores_np[:5])
+
+            # Convert tensor elements to scalars if they are tensors
+            model_scores_np = [score.item() if isinstance(score, torch.Tensor) else score for score in model_scores_np]
+
+            # Calculate the average
+            score_summary['model_score'] = np.average(model_scores_np)
+
+
 
         num_successes = len(
             [i for i in self.scores['nav_errors'] if i < self.error_margin])
