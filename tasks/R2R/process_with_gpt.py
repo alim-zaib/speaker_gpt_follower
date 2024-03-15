@@ -22,9 +22,9 @@ def call_chatgpt(prompt, api_key, max_retries=3):
         'Content-Type': 'application/json'
     }
     data = {
-        'model': 'gpt-3.5-turbo-instruct',
+        'model': 'gpt-3.5-turbo-instruct', # !!! MODEL !!!
         'prompt': prompt,
-        'max_tokens': 100
+        'max_tokens': 100 
     }
     for _ in range(max_retries):
         response = requests.post('https://api.openai.com/v1/completions',
@@ -40,13 +40,13 @@ def refine_instruction(instruction, api_key):
     """
     Refine a single instruction using ChatGPT and format it.
     """
-    if instruction.strip():  # Only process non-empty instructions
+    if instruction.strip():  
         # THE PROMPT!!!
         prompt = f"Refine this instruction: {instruction}"
         refined_instruction = call_chatgpt(prompt, api_key)
         return format_instruction(refined_instruction)
     else:
-        return instruction  # Return as-is if empty
+        return instruction  
     
 def process_instruction(item, api_key):
     for j, original_instruction in enumerate(item['instructions']):
@@ -55,7 +55,7 @@ def process_instruction(item, api_key):
             item['instructions'][j] = refined_instruction
     return item
     
-def process_batch(data, start_index, end_index, api_key, max_workers=10):
+def process_batch(data, start_index, end_index, api_key, max_workers=10):    # max_workers = amount of threads
     #print(f"Processing items at indices: {list(range(start_index, end_index))}")
     processed_items = [None] * (end_index - start_index)  # Preallocate list with None to maintain order
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
@@ -78,7 +78,7 @@ def process_batch(data, start_index, end_index, api_key, max_workers=10):
 
 
 
-def process_file(input_file, output_file, api_key, start_index=0, num_items=100, batch_size=100):
+def process_file(input_file, output_file, api_key, start_index=0, num_items=100, batch_size=100):  # Implemented refinining in batches, optional usage
     #print(f"DEBUG in process_file: Start Index: {start_index}, Num Items: {num_items}, Batch Size: {batch_size}")  # Debugging print
     with open(input_file, 'r') as file:
         data = json.load(file)
@@ -95,9 +95,8 @@ def process_file(input_file, output_file, api_key, start_index=0, num_items=100,
             json.dump(batch_data, file, indent=4)  # Write batch_data directly
         logging.info(f'Saved batch {current_start}-{current_end} to {batch_file}')
         
-        all_processed_items.extend(batch_data)  # Optional: Collect all processed items
+        all_processed_items.extend(batch_data)  
 
-    # Optional: Use all_processed_items if you need to do something with all processed items
 
 
 
@@ -108,7 +107,7 @@ def main():
     parser.add_argument('output_file', type=str, help='Output JSON file path without extension')
     parser.add_argument('--start_index', type=int, default=0, help='Starting index for processing instructions')
     parser.add_argument('--num_items', type=int, default=100, help='Number of items to process')
-    parser.add_argument('--batch_size', type=int, default=100, help='Number of items per batch')
+    parser.add_argument('--batch_size', type=int, default=100, help='Number of items per batch') # Implemented refinining in batches, optional usage
     args = parser.parse_args()
     
     print(f"DEBUG: Start Index: {args.start_index}, Num Items: {args.num_items}, Batch Size: {args.batch_size}")
