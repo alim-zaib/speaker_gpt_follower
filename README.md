@@ -18,8 +18,13 @@ The project consists of steps where the initial instructions are created by the 
 - **OpenAI API**: Central to integrating GPT models for the instruction refinement process.
 - **Python**: The primary programming language used for scripting the instruction refinement and evaluation processes.
 - **Concurrent Futures**: Facilitates multithreading to improve the efficiency of the GPT refinement process.
+- **Anaconda**: Used for managing project environments and dependencies, enabling smooth development and testing across different computational setups.
+- **Computational Shared Facility**: Leveraged the university's computational resources for processing large datasets and running intensive models.
+- **PyTorch Libraries**: Explored and utilised PyTorch-related libraries for updating and managing model-related code.
+- **OpenCV Libraries**:  Investigated the OpenCV library to update any outdated functions that were causing issues.
 - **Logging**: Utilised for tracking the process flow and identifying potential issues during the instruction refinement stage.
 - **JSON**: Employed for handling the instruction data, enabling seamless integration between the speaker model, GPT refinement, and follower model.
+
 
 ## Acknowledgments
 - Ronghang Hu and contributors for the foundational "Speaker-Follower Models for Vision-and-Language Navigation" repository (https://github.com/ronghanghu/speaker_follower).
