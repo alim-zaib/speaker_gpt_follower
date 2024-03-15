@@ -9,13 +9,13 @@ def merge_and_sort(original_file, missing_file, output_file):
     with open(missing_file, 'r') as file:
         missing_data = json.load(file)
     
-    # Combine the two datasets
+    # Combine the two 
     combined_data = original_data + missing_data
     
     # Sort the combined dataset by path_id
     combined_data_sorted = sorted(combined_data, key=lambda x: x['path_id'])
     
-    # Save the sorted combined dataset
+    # Save 
     with open(output_file, 'w') as file:
         json.dump(combined_data_sorted, file, indent=4)
 

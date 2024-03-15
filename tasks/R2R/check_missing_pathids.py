@@ -4,17 +4,15 @@ import json
 with open('final_combined_output.json', 'r') as file:
     data = json.load(file)
 
-# Extract the list of path_ids from the data
 path_ids = [item['path_id'] for item in data]
 
-# Specify the range of path_ids you expect
-start_id = 1000000
+# Specify the range of path_ids you want to check if anything is missing
+start_id = 1000000 #path_id starts at this value
 end_id = 1178299
 
-# Find the missing path_ids
+# Find the missing path_ids between that range
 missing_path_ids = [path_id for path_id in range(start_id, end_id + 1) if path_id not in path_ids]
 
-# Check if there are missing path_ids and print the appropriate message
 if missing_path_ids:
     print("Missing path_ids:", missing_path_ids)
     # Save the missing path_ids to a JSON file

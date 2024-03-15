@@ -3,6 +3,7 @@ import argparse
 import re
 from collections import defaultdict
 
+
 def load_vocab(vocab_file):
     with open(vocab_file, 'r') as file:
         vocab = set(file.read().splitlines())

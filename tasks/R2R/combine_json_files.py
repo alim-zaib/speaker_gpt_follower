@@ -1,9 +1,11 @@
 import json
 import glob
 
+# This file only needs to be used if instructions were processed in batches.
+
 def combine_json_files(input_pattern, output_file):
     """
-    Combines multiple JSON files into a single JSON file.
+    Combines multiple JSON files into a single JSON file. 
 
     :param input_pattern: Glob pattern to match the input files.
     :param output_file: Path for the combined output JSON file.
@@ -16,7 +18,6 @@ def combine_json_files(input_pattern, output_file):
             data = json.load(file)
             combined_data.extend(data)
     
-    # Write the combined data to the output file
     with open(output_file, 'w') as file:
         json.dump(combined_data, file, indent=4)
     
