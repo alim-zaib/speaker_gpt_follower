@@ -1,72 +1,19 @@
-# Room-to-Room (R2R) Navigation Task
+## Script Overview
 
+In this section, we'll go over the custom scripts created specifically for this project. These scripts are essential for improving the navigation guidance and handling the dataset. Each script serves a purpose in the project's workflow, starting from data organisation to final instruction fine-tuning and dataset creation.
 
-## Download Data
+### Scripts
 
-Data consists of train/val-seen/val-unseen/test splits. There are two validation sets to better understand generalization performance between buildings that are in the training set (val-seen) and unseen buildings. The test set consists entirely of unseen buildings. 
+- `reformat_instructions.py`: Reformats instructions refined by GPT into a format suitable for the follower model.
+- `process_with_gpt.py`: Processes instructions using the OpenAI API. This script allows the setting of the model and specific prompts. It also utilizes concurrent futures/multithreading to speed up the process, enabling batch processing.
+- `merge_and_sort.py`: Merges and sorts specified batches/datasets to ensure all instructions are included in the dataset and are in the correct order, as multithreading can affect sequencing.
+- `combine_json_files.py`: Combines dataset batches into a single file.
+- `check_missing_pathids.py`: Checks that all path IDs/objects have been processed and are included in the refined dataset.
 
-To download, from the top level directory, run:
-```
-./tasks/R2R/data/download.sh
-```
+### Generated Dataset
 
-Data is formatted as follows:
-```
-{
-  "distance": float,
-  "scan": str,
-  "path_id": int,
-  "path": [str x num_steps],
-  "heading": float,
-  "instructions": [str x 3],
-}
-```
-- `distance`: length of the path in meters.
-- `scan`: Matterport scan id.
-- `path_id`: Unique id for this path.
-- `path`: List of viewpoint ids (the first is is the start location, the last is the goal location)
-- `heading`: Agents initial heading in radians (elevation is always assumed to be zero).
-- `instructions`: Three unique natural language strings describing how to find the goal given the start pose.
+The mentioned scripts have been used to produce a dataset labelled `R2R_GPT_enhanced_speaker_data_paths.json` located in `tasks/R2R/data`. This dataset contains navigation instructions that have been enhanced using GPT models to enhance clarity and precision. The structure of this dataset is crucial for evaluating how instruction refinement impacts navigation performance in VLN scenarios.
 
-For the test set, only the first path_id (starting location) is included. We will provide a test server for scoring uploaded trajectories according to the metrics in the [paper](https://arxiv.org/abs/1711.07280).
+### Evaluation of the Follower Model Using Refined Instructions
 
-## Directory Structure
-
-- `env.py`: Wraps the simulator and adds language instructions, with several simplifications -- namely discretized heading / elevation and pre-cached image features. This is not intended to be a standard component, or to preclude the use of continous camera actions, end-to-end training etc. Use the simulator and the data as you see fit, but this can provide a starting point.
-- `utils.py`: Text pre-processing, navigation graph loading etc.
-- `eval.py`: Evaluation script.
-- `model.py`: PyTorch seq2seq model with attention.
-- `agent.py`: Various implementations of an agent.
-- `train.py`: Training entrypoint, parameter settings etc.
-- `plot.py`: Figures from the arXiv paper.
-
-## Prerequisites
-
-Python 2, [PyTorch](http://pytorch.org/), [NetworkX](https://networkx.github.io/). Install python dependencies by running:
-```
-pip install -r /tasks/R2R/requirements.txt
-```
-
-## Training and Evaluation
-
-To train the seq2seq model with student-forcing:
-```
-python tasks/R2R/train.py
-```
-
-To run some simple baselines:
-```
-python tasks/R2R/eval.py
-```
-
-Generate figures from the paper:
-```
-python tasks/R2R/plot.py
-```
-
-The simple baselines include:
-- `ShortestAgent`: Agent that always follows the shortest path to goal (foundation for supervised training).
-- `RandomAgent`: Agent that randomly picks a directly, then tries to go straight for 5 viewpoints.
-- `StopAgent`: Agent that remains at the starting position.
-
-![Navigation Error](plots/error.png)
+With the `R2R_GPT_enhanced_speaker_data_paths.json` dataset now generated, the focus shifts to evaluating the follower model's performance. Guided by the GPT-refined instructions, its effectiveness is set to be assessed in comparison to its operation with the original instructions. This critical analysis seeks to underscore the enhancements in navigation accuracy and efficiency within VLN scenarios, demonstrating the value added by refining instructions through GPT models.
