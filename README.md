@@ -6,7 +6,7 @@ models in Vision and Language Navigation (VLN) scenarios.
 
 ## Scripts and Dataset
 
-The main components of this project, which consist of the scripts created to improve instructions through GPT models, can be found in the tasks/R2R folder. Therefore, only this specific directory has been included in the code submission. You can locate a link to the repository at the end of this document. These scripts play a role in creating and perfecting navigation instructions, forming the foundation of how the project operates.
+The main components of this project, which consist of the scripts created to improve instructions through GPT models, can be found in the `tasks/R2R` folder. Therefore, only this specific directory has been included in the code submission. You can locate a link to the repository at the end of this document. These scripts play a role in creating and perfecting navigation instructions, forming the foundation of how the project operates.
 
 ### Script Location
 
