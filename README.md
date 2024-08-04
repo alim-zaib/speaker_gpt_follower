@@ -42,4 +42,3 @@ This project involves a series of steps where initial instructions are generated
 
 ## Acknowledgments
 - Ronghang Hu and contributors for the foundational "Speaker-Follower Models for Vision-and-Language Navigation" repository (https://github.com/ronghanghu/speaker_follower).
-- OpenAI for the GPT models that significantly enhance the instruction refinement process.
